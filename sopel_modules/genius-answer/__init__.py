@@ -83,7 +83,7 @@ def sentence_responder(bot, trigger):
         logger.info(trigger.nick + " count is to " + bot.memory["last_nick_count"])
 
     if getattr(bot.config.limitation, trigger.nick):
-        if bot.memory["last_nick_count"] >= int(getattr(bot.config.limitation, trigger.nick)):
+        if bot.memory["last_nick_count"] > int(getattr(bot.config.limitation, trigger.nick)):
             logger.info(trigger.nick + " is now blocked")
             return
 
