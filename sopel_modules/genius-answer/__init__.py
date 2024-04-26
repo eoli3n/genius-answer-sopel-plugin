@@ -14,6 +14,10 @@ def setup(bot):
     global genius
     genius = lyricsgenius.Genius(genius_token)
     genius.remove_section_headers = True
+    if bot.config.fallback.default:
+        fallback = bot.config.fallback.default
+    else:
+        fallback = ""
 
 def get_two_words_in_text(text):
     splitted = text.split()
@@ -83,8 +87,6 @@ def sentence_responder(bot, trigger):
     channel = bot.channels[trigger.sender].name.replace('#','')
     if getattr(bot.config.fallback, channel):
         fallback = getattr(bot.config.fallback, channel)
-    elif bot.config.fallback.default:
-        fallback = bot.config.fallback.default
     # answer
     if response:
         bot.reply(response)
