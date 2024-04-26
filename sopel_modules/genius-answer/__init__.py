@@ -14,6 +14,7 @@ def setup(bot):
     global genius
     genius = lyricsgenius.Genius(genius_token)
     genius.remove_section_headers = True
+    global fallback
     if bot.config.fallback.default:
         fallback = bot.config.fallback.default
     else:
@@ -76,11 +77,11 @@ def sentence_responder(bot, trigger):
         bot.memory["last_nick_count"] = 1
     else:
         bot.memory["last_nick_count"] += 1
-        print(trigger.nick + " count is to " + bot.memory["last_nick_count"])
+        logger.info(trigger.nick + " count is to " + bot.memory["last_nick_count"])
 
     if getattr(bot.config.limitation, trigger.nick):
         if bot.memory["last_nick_count"] >= int(getattr(bot.config.limitation, trigger.nick)):
-            print(trigger.nick + " is now blocked")
+            logger.info(trigger.nick + " is now blocked")
             return
 
     message = trigger.group(1) + trigger.group(3)
