@@ -61,18 +61,15 @@ def genius_bot_answer(line):
 @plugin.rule(r'(.*\b)($nickname)[ :,](.*)')
 
 def sentence_responder(bot, trigger):
-    message = trigger.group(1) + trigger.group(3)
-    response = genius_bot_answer(message)
-
     # limitation serial msg per nick
-    if not last_nick:
-        last_nick = trigger.nick
-        last_nick_count = 1
-    elif last_nick == trigger.nick:
+    if last_nick == trigger.nick:
         last_nick_count += 1
     else
-        last_nick = trigger.nick
-        last_nick_count = 1
+        global last_nick = trigger.nick
+        global last_nick_count = 1
+
+    message = trigger.group(1) + trigger.group(3)
+    response = genius_bot_answer(message)
 
     if last_nick_count >= getattr(bot.config.fallback, trigger.nick):
         exit
