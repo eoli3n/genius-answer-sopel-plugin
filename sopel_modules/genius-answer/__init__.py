@@ -63,12 +63,28 @@ def genius_bot_answer(line):
 def sentence_responder(bot, trigger):
     message = trigger.group(1) + trigger.group(3)
     response = genius_bot_answer(message)
+
+    # limitation serial msg per nick
+    if not last_nick:
+        last_nick = trigger.nick
+        last_nick_count = 1
+    elif last_nick == trigger.nick:
+        last_nick_count += 1
+    else
+        last_nick = trigger.nick
+        last_nick_count = 1
+
+    if last_nick_count >= getattr(bot.config.fallback, trigger.nick):
+        exit
+
     channel = bot.channels[trigger.sender].name.replace('#','')
     if getattr(bot.config.fallback, channel):
         fallback = getattr(bot.config.fallback, channel)
     elif bot.config.fallback.default:
         fallback = bot.config.fallback.default
+    # answer
     if response:
         bot.reply(response)
+    # fallback msg
     elif fallback:
         bot.say(fallback)

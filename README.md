@@ -25,3 +25,11 @@ Bot will ``say``, not ``answer``.
 default="I don't know dude."
 channel="#channel is such a great place !"
 ```
+
+### Per nickname serial answer limitation
+To be able to limit how many answers to give to the same nickname.
+
+```ini
+[limitation]
+pinpin=3
+```
