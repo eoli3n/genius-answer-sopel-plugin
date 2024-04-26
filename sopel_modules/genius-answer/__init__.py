@@ -60,8 +60,12 @@ def genius_bot_answer(line):
 def sentence_responder(bot, trigger):
     message = trigger.group(1) + trigger.group(3)
     response = genius_bot_answer(message)
-    fallback = "J'ai pas le moral là... je crois que je suis amoureux d'arch_ange et elle ignore mes query"
+    channel = bot.channels[trigger.sender].replace('#','')
+    if getattr(bot.config.fallback, channel):
+        fallback = getattr(bot.config.fallback, channel)
+    elif bot.config.fallback.default:
+        fallback = bot.config.fallback.default
     if response:
         bot.reply(response)
-    else:
-        bot.reply(fallback)
+    elif fallback:
+        bot.say(fallback)

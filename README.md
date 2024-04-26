@@ -16,3 +16,12 @@ In ``default.cfg`` config file, add a ``[genius]`` section with ``api_key`` as
 [genius]
 api_key = xxxxxxxxxxxxxxxxx
 ```
+
+### Configure per channel fallback answers
+Bot will ``say``, not ``answer``.
+
+```ini
+[fallback]
+default="I don't know dude."
+channel="#channel is such a great place !"
+```
