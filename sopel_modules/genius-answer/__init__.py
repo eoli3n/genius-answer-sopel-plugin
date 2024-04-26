@@ -2,8 +2,11 @@
 
 import random
 import re
+import logging
 import lyricsgenius
 from sopel import plugin
+
+logger = logging.getLogger(__name__)
 
 def setup(bot):
     if "last_nick" not in bot.memory:
