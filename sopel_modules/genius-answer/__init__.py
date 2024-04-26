@@ -80,7 +80,6 @@ def sentence_responder(bot, trigger):
         bot.memory["last_nick_count"] = 1
     else:
         bot.memory["last_nick_count"] += 1
-        logger.info(trigger.nick + " count is to " + bot.memory["last_nick_count"])
 
     if getattr(bot.config.limitation, trigger.nick):
         if bot.memory["last_nick_count"] > int(getattr(bot.config.limitation, trigger.nick)):
