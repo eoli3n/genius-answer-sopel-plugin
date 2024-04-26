@@ -60,7 +60,7 @@ def genius_bot_answer(line):
 def sentence_responder(bot, trigger):
     message = trigger.group(1) + trigger.group(3)
     response = genius_bot_answer(message)
-    channel = bot.channels[trigger.sender].replace('#','')
+    channel = bot.channels[trigger.sender].name.replace('#','')
     if getattr(bot.config.fallback, channel):
         fallback = getattr(bot.config.fallback, channel)
     elif bot.config.fallback.default:
