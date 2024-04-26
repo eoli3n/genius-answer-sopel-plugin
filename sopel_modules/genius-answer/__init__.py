@@ -72,8 +72,9 @@ def sentence_responder(bot, trigger):
         last_nick = trigger.nick
         last_nick_count = 1
 
-    if last_nick_count >= getattr(bot.config.limitation, trigger.nick):
-        return
+    if getattr(bot.config.limitation, trigger.nick):
+        if last_nick_count >= getattr(bot.config.limitation, trigger.nick):
+            return
 
     message = trigger.group(1) + trigger.group(3)
     response = genius_bot_answer(message)
