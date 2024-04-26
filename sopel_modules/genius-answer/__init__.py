@@ -67,7 +67,7 @@ def genius_bot_answer(line):
 def sentence_responder(bot, trigger):
 
     # limitation serial msg per nick
-    if last_nick != trigger.nick:  
+    if bot.memory["last_nick"] != trigger.nick:  
         bot.memory["last_nick"] = trigger.nick
         bot.memory["last_nick_count"] = 1
     else:
