@@ -74,7 +74,7 @@ def sentence_responder(bot, trigger):
         bot.memory["last_nick_count"] += 1
 
     if getattr(bot.config.limitation, trigger.nick):
-        if bot.memory["last_nick_count"] >= getattr(bot.config.limitation, trigger.nick):
+        if bot.memory["last_nick_count"] >= int(getattr(bot.config.limitation, trigger.nick)):
             return
 
     message = trigger.group(1) + trigger.group(3)
