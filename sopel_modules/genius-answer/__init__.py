@@ -50,9 +50,12 @@ def search_line_by_song(sid):
     return line
 
 def genius_bot_answer(line):
-    words = get_two_words_in_text(line)
-    result = search_song_by_text(words)
-    answer = search_line_by_song(result['song_id'])
+    try:
+        words = get_two_words_in_text(line)
+        result = search_song_by_text(words)
+        answer = search_line_by_song(result['song_id'])
+    except:
+        return False
     return answer
 
 @plugin.rule(r'(.*\b)($nickname)[ :,](.*)')
