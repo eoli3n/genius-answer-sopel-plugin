@@ -6,6 +6,10 @@ import lyricsgenius
 from sopel import plugin
 
 def setup(bot):
+    if "last_nick" not in bot.memory:
+        bot.memory["last_nick"] = ""
+    if "last_nick_count" not in bot.memory:
+        bot.memory["last_nick_count"] = 0
     genius_token = bot.config.genius.api_key
     global genius
     genius = lyricsgenius.Genius(genius_token)
@@ -62,18 +66,15 @@ def genius_bot_answer(line):
 
 def sentence_responder(bot, trigger):
 
-    global last_nick
-    global last_nick_count
-
     # limitation serial msg per nick
-    if last_nick == trigger.nick:
-        last_nick_count += 1
-    else
-        last_nick = trigger.nick
-        last_nick_count = 1
+    if last_nick != trigger.nick:  
+        bot.memory["last_nick"] = trigger.nick
+        bot.memory["last_nick_count"] = 1
+    else:
+        bot.memory["last_nick_count"] += 1
 
     if getattr(bot.config.limitation, trigger.nick):
-        if last_nick_count >= getattr(bot.config.limitation, trigger.nick):
+        if bot.memory["last_nick_count"] >= getattr(bot.config.limitation, trigger.nick):
             return
 
     message = trigger.group(1) + trigger.group(3)
