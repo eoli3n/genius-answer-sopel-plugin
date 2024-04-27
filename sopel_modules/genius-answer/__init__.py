@@ -69,7 +69,7 @@ def search_next_line_by_song(sid, line):
         # DEBUG
         LOGGER.info(sanitized_row)
 
-        if sanitized_row.find(sanitized_line) != -1:
+        if sanitized_row == sanitized_line:
             LOGGER.info("found line")
             next_index = text_list.index(row) + 1
             next_line = text_list[next_index]
