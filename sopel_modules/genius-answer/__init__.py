@@ -58,9 +58,6 @@ def search_song_by_text(text):
 def search_next_line_by_song(sid, line):
     sanitized_line = re.sub(r"[^a-zA-Z ]+", "", line).lower().lstrip()
 
-    # DEBUG
-    LOGGER.info("san line is : %s", sanitized_line)
-
     text = genius.lyrics(song_id=sid)
     text_list = text.split('\n')
     for row in text_list:
@@ -70,11 +67,23 @@ def search_next_line_by_song(sid, line):
         #LOGGER.debug(sanitized_line)
         #LOGGER.debug(sanitized_row)
 
-        if sanitized_line in sanitized_row:
-            LOGGER.info("found line")
+        # If input is the full sentence, output next sentence
+        if sanitized_line == sanitized_row:
             next_index = text_list.index(row) + 1
             next_line = text_list[next_index]
             return next_line
+        # If input is the begginning of a sentence, finish the sentence
+        elif sanitized_line in sanitized_row:
+            sanitized_line_list = sanitized_line.split()
+            last_line_word = sanitized_line_list[-1]
+            current_index = text_list.index(row)
+            current_sentence_list = text_list[current_index].split()
+            for word in current_sentence_list:
+                sanitized_word = re.sub(r"[^a-zA-Z ]+", "", word).lower()
+                if sanitized_word == last_line_word:
+                    next_word_index = current_sentence_list.index(word) + 1
+            end_line = text_list[next_word_index:]
+            return end_line
     return False
 
 def genius_bot_answer(line):
