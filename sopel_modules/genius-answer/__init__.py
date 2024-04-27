@@ -43,8 +43,7 @@ def get_two_words_in_text(text):
 
 def search_song_by_text(text):
     request = genius.search_lyrics(text)
-    random_one_to_nine=random.randrange(10)
-    hit=request['sections'][0]['hits'][random.randrange(10)]
+    hit=request['sections'][0]['hits'][0]
     result = {
         "title": hit['result']['title'],
         "artist": hit['result']['artist_names'],
@@ -65,7 +64,8 @@ def genius_bot_answer(line):
     try:
         #words = get_two_words_in_text(line)
         result = search_song_by_text(line)
-        answer = search_line_by_song(result['song_id'])
+        #answer = search_line_by_song(result['song_id'])
+        answer = result['title']
     except:
         return False
     return answer
