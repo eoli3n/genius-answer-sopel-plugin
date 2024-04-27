@@ -103,5 +103,5 @@ def sentence_responder(bot, trigger):
     if response:
         bot.reply(response)
     # fallback msg
-    elif fallback:
+    elif fallback in globals():
         bot.say(fallback)
