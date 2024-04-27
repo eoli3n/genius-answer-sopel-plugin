@@ -82,7 +82,7 @@ def search_next_line_by_song(sid, line):
                 sanitized_word = re.sub(r"[^a-zA-Z ]+", "", word).lower()
                 if sanitized_word == last_line_word:
                     next_word_index = current_sentence_list.index(word) + 1
-                    end_line = current_sentence_list[next_word_index:].join(' ')
+                    end_line = " ".join(current_sentence_list[next_word_index:])
                     return end_line
     return False
 
