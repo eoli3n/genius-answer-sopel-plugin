@@ -17,6 +17,7 @@ def setup(bot):
     global genius
     genius = lyricsgenius.Genius(genius_token)
     genius.remove_section_headers = True
+    genius.skip_non_songs = True
 
 def get_words_in_text(text):
     splitted = text.split()
