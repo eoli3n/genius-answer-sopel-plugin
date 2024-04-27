@@ -67,23 +67,27 @@ def search_next_line_by_song(sid, line):
         #LOGGER.debug(sanitized_line)
         #LOGGER.debug(sanitized_row)
 
-        # If input is the full sentence, output next sentence
+        # If input is the full sentence
         if sanitized_line == sanitized_row:
-            next_index = text_list.index(row) + 1
-            next_line = text_list[next_index]
-            return next_line
+            pass
         # If input is the begginning of a sentence, finish the sentence
         elif sanitized_line in sanitized_row:
             sanitized_line_list = sanitized_line.split(' ')
             last_line_word = sanitized_line_list[-1]
             current_index = text_list.index(row)
             current_sentence_list = text_list[current_index].split()
-            for word in current_sentence_list:
+            # For all words that are not the last one of the sentence
+            for word in current_sentence_list[:-1]:
                 sanitized_word = re.sub(r"[^a-zA-Z ]+", "", word).lower()
                 if sanitized_word == last_line_word:
                     next_word_index = current_sentence_list.index(word) + 1
                     end_line = " ".join(current_sentence_list[next_word_index:])
                     return end_line
+        # For the last word and full sentence
+        next_index = text_list.index(row) + 1
+        next_line = text_list[next_index]
+        return next_line
+
     return False
 
 def genius_bot_answer(line):
