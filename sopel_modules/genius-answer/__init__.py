@@ -6,7 +6,7 @@ import logging
 import lyricsgenius
 from sopel import plugin
 
-logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 def setup(bot):
     if "last_nick" not in bot.memory:
@@ -57,13 +57,13 @@ def search_song_by_text(text):
 
 def search_next_line_by_song(sid, line):
     sanitized_line = re.sub(r"[^a-zA-Z]+", "", line)
-    logger.debug('san line is : ' + sanitized_line)
+    LOGGER.debug('san line is : ' + sanitized_line)
     text = genius.lyrics(song_id=sid)
     text_list = text.split('\n')
     for row in text_list:
         sanitized_row = re.sub(r"[^a-zA-Z]+", "", row)
         if sanitized_row.find(line) != -1:
-            logger.debug('found line')
+            LOGGER.debug('found line')
             next_index = text_list.index(row) + 1
             next_line = text_list[next_index]
             return next_line
