@@ -66,6 +66,10 @@ def search_next_line_by_song(sid, line):
     for row in text_list:
         sanitized_row = re.sub(r"[^a-zA-Z ]+", "", row).lower()
 
+        # DEBUG
+        LOGGER.info(sanitized_line)
+        LOGGER.info(sanitized_row)
+
         if sanitized_row == sanitized_line:
             LOGGER.info("found line")
             next_index = text_list.index(row) + 1
