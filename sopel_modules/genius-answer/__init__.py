@@ -65,7 +65,7 @@ def genius_bot_answer(line):
         #words = get_two_words_in_text(line)
         result = search_song_by_text(line)
         #answer = search_line_by_song(result['song_id'])
-        answer = result['title']
+        answer = result['artist'] + " - " + result['title']
     except:
         return False
     return answer
