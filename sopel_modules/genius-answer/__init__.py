@@ -56,11 +56,16 @@ def search_song_by_text(text):
 #    return line
 
 def search_next_line_by_song(sid, line):
+    sanitized_line = re.sub(r"[^a-zA-Z]+", "", line)
     text = genius.lyrics(song_id=sid)
     text_list = text.split('\n')
-    next_index = text_list.index(line) + 1
-    next_line = text_list[next_index]
-    return next_line
+    for row in text_list:
+        sanitized_row = re.sub(r"[^a-zA-Z]+", "", row)
+        if sanitized_row.find(line) != -1:
+            next_index = text_list.index(row) + 1
+            next_line = text_list[next_index]
+            return next_line
+    return False
 
 def genius_bot_answer(line):
     #try:
