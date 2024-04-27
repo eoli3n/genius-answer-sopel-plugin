@@ -17,11 +17,6 @@ def setup(bot):
     global genius
     genius = lyricsgenius.Genius(genius_token)
     genius.remove_section_headers = True
-    global fallback
-    if bot.config.fallback.default:
-        fallback = bot.config.fallback.default
-    else:
-        fallback = ""
 
 def get_two_words_in_text(text):
     splitted = text.split()
@@ -73,6 +68,13 @@ def genius_bot_answer(line):
 @plugin.rule(r'(.*\b)($nickname)[ :,](.*)')
 
 def sentence_responder(bot, trigger):
+
+    # configure fallback
+    global fallback
+    if bot.config.fallback.default:
+        fallback = bot.config.fallback.default
+    else:
+        fallback = ""
 
     # limitation serial msg per nick
     if bot.memory["last_nick"] != trigger.nick:  
