@@ -69,15 +69,9 @@ def search_next_line_by_song(sid, line):
 
         # If input is the full sentence
         if sanitized_line == sanitized_row:
-
-            LOGGER.info("Full sentence detected")
-
-            #pass
+            nextsentence=True
         # If input is the begginning of a sentence, finish the sentence
         elif sanitized_line in sanitized_row:
- 
-            LOGGER.info("Inside sentence detected")
-
             sanitized_line_list = sanitized_line.split(' ')
             last_line_word = sanitized_line_list[-1]
             current_index = text_list.index(row)
@@ -91,10 +85,15 @@ def search_next_line_by_song(sid, line):
                     next_word_index = current_sentence_list.index(word) + 1
                     end_line = " ".join(current_sentence_list[next_word_index:])
                     return end_line
+
+            if current_sentence_list[-1]:
+                nextsentence=True
+
         # For the last word and full sentence
-        next_index = text_list.index(row) + 1
-        next_line = text_list[next_index]
-        return next_line
+        if nextsentence:
+            next_index = text_list.index(row) + 1
+            next_line = text_list[next_index]
+            return next_line
 
     return False
 
