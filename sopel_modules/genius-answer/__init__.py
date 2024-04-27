@@ -56,7 +56,7 @@ def search_song_by_text(text):
 #    return line
 
 def search_next_line_by_song(sid, line):
-    sanitized_line = re.sub(r"[^a-zA-Z ]+", "", line)
+    sanitized_line = re.sub(r"[^a-zA-Z ]+", "", line).lower()
 
     # DEBUG
     LOGGER.info("san line is : %s", sanitized_line)
@@ -64,10 +64,7 @@ def search_next_line_by_song(sid, line):
     text = genius.lyrics(song_id=sid)
     text_list = text.split('\n')
     for row in text_list:
-        sanitized_row = re.sub(r"[^a-zA-Z ]+", "", row)
-
-        # DEBUG
-        LOGGER.info(sanitized_row)
+        sanitized_row = re.sub(r"[^a-zA-Z ]+", "", row).lower()
 
         if sanitized_row == sanitized_line:
             LOGGER.info("found line")
