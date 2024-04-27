@@ -98,7 +98,7 @@ def search_next_line_by_song(sid, line):
                 if sanitized_word == last_line_word:
                     next_word_index = current_sentence_list.index(word) + 1
 
-                LOGGER.info("next_word_index: " + str(next_word_index))
+                    LOGGER.info("next_word_index: " + str(next_word_index))
 
             end_line = text_list[next_word_index:]
 
