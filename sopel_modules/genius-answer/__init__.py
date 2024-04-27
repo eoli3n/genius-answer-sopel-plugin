@@ -78,6 +78,10 @@ def search_next_line_by_song(sid, line):
             current_sentence_list = text_list[current_index].split()
             # For all words that are not the last one of the sentence
             for word in current_sentence_list[:-1]:
+
+                # DEBUG
+                LOGGER.info(str(current_sentence_list[:-1]))
+
                 sanitized_word = re.sub(r"[^a-zA-Z ]+", "", word).lower()
                 if sanitized_word == last_line_word:
                     next_word_index = current_sentence_list.index(word) + 1
