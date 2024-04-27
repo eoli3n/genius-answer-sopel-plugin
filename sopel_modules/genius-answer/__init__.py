@@ -1,14 +1,12 @@
 #! /usr/bin/env python3
 
-from __future__ import annotations
-
 import random
 import re
 import logging
 import lyricsgenius
-from sopel import plugin
+from sopel import plugin, tools
 
-LOGGER = logging.getLogger(__name__)
+LOGGER = tools.get_logger('genius-answer')
 
 def setup(bot):
     if "last_nick" not in bot.memory:
