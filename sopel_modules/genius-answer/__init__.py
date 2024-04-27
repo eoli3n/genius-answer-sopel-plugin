@@ -77,16 +77,17 @@ def sentence_responder(bot, trigger):
         fallback = ""
 
     # limitation serial msg per nick
-    if bot.memory["last_nick"] != trigger.nick:  
-        bot.memory["last_nick"] = trigger.nick
-        bot.memory["last_nick_count"] = 1
-    else:
-        bot.memory["last_nick_count"] += 1
+    if not trigger.sender.is_nick():
+        if bot.memory["last_nick"] != trigger.nick:  
+            bot.memory["last_nick"] = trigger.nick
+            bot.memory["last_nick_count"] = 1
+        else:
+            bot.memory["last_nick_count"] += 1
 
-    if getattr(bot.config.limitation, trigger.nick):
-        if bot.memory["last_nick_count"] > int(getattr(bot.config.limitation, trigger.nick)):
-            logger.info(trigger.nick + " is now blocked")
-            return
+        if getattr(bot.config.limitation, trigger.nick):
+            if bot.memory["last_nick_count"] > int(getattr(bot.config.limitation, trigger.nick)):
+                logger.info(trigger.nick + " is now blocked")
+                return
 
     message = trigger.group(1) + trigger.group(3)
     response = genius_bot_answer(message)
