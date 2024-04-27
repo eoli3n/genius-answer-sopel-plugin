@@ -38,7 +38,7 @@ def get_words_in_text(text):
 
 def search_song_by_text(text):
     request = genius.search_lyrics(text)
-    hit=request['sections'][0]['hits'][random.randrange(5)]
+    hit=request['sections'][0]['hits'][0]
     result = {
         "title": hit['result']['title'],
         "artist": hit['result']['artist_names'],
@@ -65,8 +65,8 @@ def search_next_line_by_song(sid, line):
         sanitized_row = re.sub(r"[^a-zA-ZÀ-ÿ ]+", "", row).lower().lstrip()
 
         # DEBUG
-        #LOGGER.info(sanitized_line)
-        #LOGGER.info(sanitized_row)
+        LOGGER.info(sanitized_line)
+        LOGGER.info(sanitized_row)
 
         # If input is the full sentence
         if sanitized_line == sanitized_row:
