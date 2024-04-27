@@ -64,7 +64,7 @@ def search_next_line_by_song(sid, line):
 
     LOGGER.info(sanitized_text)
 
-    if sanitized_text.index(sanitized_line):
+    if sanitized_text.find(sanitized_line) != -1:
         text_list = text.split('\n')
 
         for row in text_list:
