@@ -72,6 +72,7 @@ def search_next_line_by_song(sid, line):
 def genius_bot_answer(line):
     #try:
         #words = get_two_words_in_text(line)
+    LOGGER.info('test')
     result = search_song_by_text(line)
     answer = search_next_line_by_song(result['song_id'], line)
         #answer = result['artist'] + " - " + result['title']
