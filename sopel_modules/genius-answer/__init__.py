@@ -92,9 +92,10 @@ def sentence_responder(bot, trigger):
     message = trigger.group(1) + trigger.group(3)
     response = genius_bot_answer(message)
 
-    channel = bot.channels[trigger.sender].name.replace('#','')
-    if getattr(bot.config.fallback, channel):
-        fallback = getattr(bot.config.fallback, channel)
+    if not trigger.sender.is_nick():
+        channel = bot.channels[trigger.sender].name.replace('#','')
+        if getattr(bot.config.fallback, channel):
+            fallback = getattr(bot.config.fallback, channel)
     # answer
     if response:
         bot.reply(response)
