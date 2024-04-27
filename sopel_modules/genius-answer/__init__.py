@@ -62,9 +62,6 @@ def search_next_line_by_song(sid, line):
     sanitized_text = re.sub(r"[^a-zA-ZÀ-ÿ ]+", "", text).lower()
 
     # speed up the process
-
-    LOGGER.info(sanitized_text)
-
     if sanitized_text.find(sanitized_line) != -1:
         text_list = text.split('\n')
 
@@ -73,8 +70,8 @@ def search_next_line_by_song(sid, line):
             sanitized_row = re.sub(r"[^a-zA-ZÀ-ÿ ]+", "", row).lower().lstrip()
 
             # DEBUG
-            LOGGER.info(sanitized_line)
-            LOGGER.info(sanitized_row)
+            #LOGGER.info(sanitized_line)
+            #LOGGER.info(sanitized_row)
 
             # If input is the full sentence
             if sanitized_line == sanitized_row:
