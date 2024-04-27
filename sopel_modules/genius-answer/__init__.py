@@ -18,7 +18,7 @@ def setup(bot):
     genius = lyricsgenius.Genius(genius_token)
     genius.remove_section_headers = True
 
-def get_two_words_in_text(text):
+def get_words_in_text(text):
     splitted = text.split()
     for word in splitted:
         if not re.match("^[A-Za-zÀ-ÿ-']*$", word):
@@ -38,7 +38,7 @@ def get_two_words_in_text(text):
 
 def search_song_by_text(text):
     request = genius.search_lyrics(text)
-    hit=request['sections'][0]['hits'][0]
+    hit=request['sections'][0]['hits'][random.randrange(5)]
     result = {
         "title": hit['result']['title'],
         "artist": hit['result']['artist_names'],
@@ -47,13 +47,13 @@ def search_song_by_text(text):
     }
     return result
 
-#def search_line_by_song(sid):
-#    text = genius.lyrics(song_id=sid)
-#    text_list = text.split('\n')
-#    text_length = len(text_list) 
-#    randomnum = random.randrange(text_length - 1)
-#    line = text_list[randomnum]
-#    return line
+def search_line_by_song(sid):
+    text = genius.lyrics(song_id=sid)
+    text_list = text.split('\n')
+    text_length = len(text_list) 
+    randomnum = random.randrange(text_length - 1)
+    line = text_list[randomnum]
+    return line
 
 def search_next_line_by_song(sid, line):
     sanitized_line = re.sub(r"[^a-zA-ZÀ-ÿ ]+", "", line).lower().lstrip()
@@ -99,14 +99,20 @@ def search_next_line_by_song(sid, line):
     return False
 
 def genius_bot_answer(line):
-    #try:
-        #words = get_two_words_in_text(line)
-    result = search_song_by_text(line)
-    answer = search_next_line_by_song(result['song_id'], line)
-        #answer = result['artist'] + " - " + result['title']
-    #except:
-    #    return False
-    return answer
+    try:
+        result = search_song_by_text(line)
+        answer = search_next_line_by_song(result['song_id'], line)
+
+        # if no text is returned, random answer
+        if not answer:
+            words = get_words_in_text(line)
+            result = search_song_by_text(words)
+            answer = search_line_by_song(result['song_id'])
+
+        return answer
+
+    except:
+        return False
 
 @plugin.rule(r'(.*\b)($nickname)[ :,](.*)')
 
