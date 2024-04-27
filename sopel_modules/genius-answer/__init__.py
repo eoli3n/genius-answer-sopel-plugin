@@ -63,8 +63,8 @@ def search_line_by_song(sid):
 
 def genius_bot_answer(line):
     try:
-        words = get_two_words_in_text(line)
-        result = search_song_by_text(words)
+        #words = get_two_words_in_text(line)
+        result = search_song_by_text(line)
         answer = search_line_by_song(result['song_id'])
     except:
         return False
