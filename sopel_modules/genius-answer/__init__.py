@@ -58,43 +58,47 @@ def search_line_by_song(sid):
 def search_next_line_by_song(sid, line):
     sanitized_line = re.sub(r"[^a-zA-ZÀ-ÿ ]+", "", line).lower().lstrip()
     text = genius.lyrics(song_id=sid)
-    text_list = text.split('\n')
+    sanitized_text = re.sub(r"[^a-zA-ZÀ-ÿ ]+", "", text).lower()
 
-    for row in text_list:
-        nextsentence=False
-        sanitized_row = re.sub(r"[^a-zA-ZÀ-ÿ ]+", "", row).lower().lstrip()
+    # speed up the process
+    if sanitized_text.find(sanitized_line):
+        text_list = text.split('\n')
 
-        # DEBUG
-        LOGGER.info(sanitized_line)
-        LOGGER.info(sanitized_row)
+        for row in text_list:
+            nextsentence=False
+            sanitized_row = re.sub(r"[^a-zA-ZÀ-ÿ ]+", "", row).lower().lstrip()
 
-        # If input is the full sentence
-        if sanitized_line == sanitized_row:
-            nextsentence=True
-        # If input is the begginning of a sentence, finish the sentence
-        elif sanitized_line in sanitized_row:
-            sanitized_line_list = sanitized_line.split(' ')
-            last_line_word = sanitized_line_list[-1]
-            current_index = text_list.index(row)
-            current_sentence_list = text_list[current_index].split()
+            # DEBUG
+            LOGGER.info(sanitized_line)
+            LOGGER.info(sanitized_row)
 
-            # For all words that are not the last one of the sentence
-            for word in current_sentence_list[:-1]:
-
-                sanitized_word = re.sub(r"[^a-zA-ZÀ-ÿ ]+", "", word).lower()
-                if sanitized_word == last_line_word:
-                    next_word_index = current_sentence_list.index(word) + 1
-                    end_line = " ".join(current_sentence_list[next_word_index:])
-                    return end_line
-
-            if current_sentence_list[-1]:
+            # If input is the full sentence
+            if sanitized_line == sanitized_row:
                 nextsentence=True
+            # If input is the begginning of a sentence, finish the sentence
+            elif sanitized_line in sanitized_row:
+                sanitized_line_list = sanitized_line.split(' ')
+                last_line_word = sanitized_line_list[-1]
+                current_index = text_list.index(row)
+                current_sentence_list = text_list[current_index].split()
 
-        # For the last word and full sentence
-        if nextsentence:
-            next_index = text_list.index(row) + 1
-            next_line = text_list[next_index]
-            return next_line
+                # For all words that are not the last one of the sentence
+                for word in current_sentence_list[:-1]:
+
+                    sanitized_word = re.sub(r"[^a-zA-ZÀ-ÿ ]+", "", word).lower()
+                    if sanitized_word == last_line_word:
+                        next_word_index = current_sentence_list.index(word) + 1
+                        end_line = " ".join(current_sentence_list[next_word_index:])
+                        return end_line
+
+                if current_sentence_list[-1]:
+                    nextsentence=True
+
+            # For the last word and full sentence
+            if nextsentence:
+                next_index = text_list.index(row) + 1
+                next_line = text_list[next_index]
+                return next_line
 
     return False
 
