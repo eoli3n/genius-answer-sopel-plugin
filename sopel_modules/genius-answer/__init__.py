@@ -72,7 +72,7 @@ def search_next_line_by_song(sid, line):
 
             LOGGER.info("Full sentence detected")
 
-            pass
+            #pass
         # If input is the begginning of a sentence, finish the sentence
         elif sanitized_line in sanitized_row:
  
