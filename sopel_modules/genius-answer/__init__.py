@@ -63,13 +63,13 @@ def search_next_line_by_song(sid, line):
     return next_line
 
 def genius_bot_answer(line):
-    try:
+    #try:
         #words = get_two_words_in_text(line)
-        result = search_song_by_text(line)
-        answer = search_next_line_by_song(result['song_id'], line)
+    result = search_song_by_text(line)
+    answer = search_next_line_by_song(result['song_id'], line)
         #answer = result['artist'] + " - " + result['title']
-    except:
-        return False
+    #except:
+    #    return False
     return answer
 
 @plugin.rule(r'(.*\b)($nickname)[ :,](.*)')
