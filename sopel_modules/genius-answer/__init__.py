@@ -61,6 +61,7 @@ def search_next_line_by_song(sid, line):
     text = genius.lyrics(song_id=sid)
     text_list = text.split('\n')
     for row in text_list:
+        nextsentence=False
         sanitized_row = re.sub(r"[^a-zA-Z ]+", "", row).lower().lstrip()
 
         # DEBUG
