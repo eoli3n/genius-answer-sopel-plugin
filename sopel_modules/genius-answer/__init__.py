@@ -52,20 +52,27 @@ def search_song_by_text(text):
     }
     return result
 
-def search_line_by_song(sid):
+#def search_line_by_song(sid):
+#    text = genius.lyrics(song_id=sid)
+#    text_list = text.split('\n')
+#    text_length = len(text_list) 
+#    randomnum = random.randrange(text_length - 1)
+#    line = text_list[randomnum]
+#    return line
+
+def search_next_line_by_song(sid, line):
     text = genius.lyrics(song_id=sid)
     text_list = text.split('\n')
-    text_length = len(text_list) 
-    randomnum = random.randrange(text_length - 1)
-    line = text_list[randomnum]
-    return line
+    next_index = text_list.index(line) + 1
+    next_line = text_list[next_index]
+    return next_line
 
 def genius_bot_answer(line):
     try:
         #words = get_two_words_in_text(line)
         result = search_song_by_text(line)
-        #answer = search_line_by_song(result['song_id'])
-        answer = result['artist'] + " - " + result['title']
+        answer = search_next_line_by_song(result['song_id'], line)
+        #answer = result['artist'] + " - " + result['title']
     except:
         return False
     return answer
