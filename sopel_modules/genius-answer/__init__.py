@@ -75,35 +75,15 @@ def search_next_line_by_song(sid, line):
         # If input is the begginning of a sentence, finish the sentence
         elif sanitized_line in sanitized_row:
             sanitized_line_list = sanitized_line.split(' ')
-
-            LOGGER.info("sanitized_line_list: " + str(sanitized_line_list))
-
             last_line_word = sanitized_line_list[-1]
-
-            LOGGER.info("last_line_word: " + str(last_line_word))
-
             current_index = text_list.index(row)
-
-            LOGGER.info("current_index: " + str(current_index))
-
             current_sentence_list = text_list[current_index].split()
-
-            LOGGER.info("current_sentence_list: " + str(current_sentence_list))
-
             for word in current_sentence_list:
                 sanitized_word = re.sub(r"[^a-zA-Z ]+", "", word).lower()
-                
-                LOGGER.info("sanitized_word: " + str(sanitized_word))
-
                 if sanitized_word == last_line_word:
                     next_word_index = current_sentence_list.index(word) + 1
-
-                    LOGGER.info("next_word_index: " + str(next_word_index))
-
-            end_line = text_list[next_word_index:]
-
-            LOGGER.info("end_line: " + str(end_line))
-            return end_line
+                    end_line = current_sentence_list[next_word_index:].join(' ')
+                    return end_line
     return False
 
 def genius_bot_answer(line):
