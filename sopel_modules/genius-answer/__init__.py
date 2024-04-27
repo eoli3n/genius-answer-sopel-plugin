@@ -18,7 +18,7 @@ def setup(bot):
     genius = lyricsgenius.Genius(genius_token)
     genius.remove_section_headers = True
 
-def get_two_words_in_text(text):
+def get_words_in_text(text):
     splitted = text.split()
     for word in splitted:
         if not re.match("^[A-Za-zÀ-ÿ-']*$", word):
@@ -38,8 +38,7 @@ def get_two_words_in_text(text):
 
 def search_song_by_text(text):
     request = genius.search_lyrics(text)
-    random_one_to_nine=random.randrange(10)
-    hit=request['sections'][0]['hits'][random.randrange(10)]
+    hit=request['sections'][0]['hits'][0]
     result = {
         "title": hit['result']['title'],
         "artist": hit['result']['artist_names'],
@@ -56,14 +55,71 @@ def search_line_by_song(sid):
     line = text_list[randomnum]
     return line
 
+def search_next_line_by_song(sid, line):
+    sanitized_line = re.sub(r"[^a-zA-ZÀ-ÿ ]+", "", line).lower().lstrip()
+    text = genius.lyrics(song_id=sid)
+    sanitized_text = re.sub(r"[^a-zA-ZÀ-ÿ ]+", "", text).lower()
+
+    # speed up the process
+
+    LOGGER.info(sanitized_text)
+
+    if sanitized_text.find(sanitized_line) != -1:
+        text_list = text.split('\n')
+
+        for row in text_list:
+            nextsentence=False
+            sanitized_row = re.sub(r"[^a-zA-ZÀ-ÿ ]+", "", row).lower().lstrip()
+
+            # DEBUG
+            LOGGER.info(sanitized_line)
+            LOGGER.info(sanitized_row)
+
+            # If input is the full sentence
+            if sanitized_line == sanitized_row:
+                nextsentence=True
+            # If input is the begginning of a sentence, finish the sentence
+            elif sanitized_line in sanitized_row:
+                sanitized_line_list = sanitized_line.split(' ')
+                last_line_word = sanitized_line_list[-1]
+                current_index = text_list.index(row)
+                current_sentence_list = text_list[current_index].split()
+
+                # For all words that are not the last one of the sentence
+                for word in current_sentence_list[:-1]:
+
+                    sanitized_word = re.sub(r"[^a-zA-ZÀ-ÿ ]+", "", word).lower()
+                    if sanitized_word == last_line_word:
+                        next_word_index = current_sentence_list.index(word) + 1
+                        end_line = " ".join(current_sentence_list[next_word_index:])
+                        return end_line
+
+                if current_sentence_list[-1]:
+                    nextsentence=True
+
+            # For the last word and full sentence
+            if nextsentence:
+                next_index = text_list.index(row) + 1
+                next_line = text_list[next_index]
+                return next_line
+
+    return False
+
 def genius_bot_answer(line):
     try:
-        words = get_two_words_in_text(line)
-        result = search_song_by_text(words)
-        answer = search_line_by_song(result['song_id'])
+        result = search_song_by_text(line)
+        answer = search_next_line_by_song(result['song_id'], line)
+
+        # if no text is returned, random answer
+        if not answer:
+            words = get_words_in_text(line)
+            result = search_song_by_text(words)
+            answer = search_line_by_song(result['song_id'])
+
+        return answer
+
     except:
         return False
-    return answer
 
 @plugin.rule(r'(.*\b)($nickname)[ :,](.*)')
 
@@ -86,7 +142,7 @@ def sentence_responder(bot, trigger):
 
         if getattr(bot.config.limitation, trigger.nick):
             if bot.memory["last_nick_count"] > int(getattr(bot.config.limitation, trigger.nick)):
-                logger.info(trigger.nick + " is now blocked")
+                LOGGER.info(trigger.nick + " is now blocked")
                 return
 
     message = trigger.group(1) + trigger.group(3)
