@@ -56,17 +56,17 @@ def search_song_by_text(text):
 #    return line
 
 def search_next_line_by_song(sid, line):
-    sanitized_line = re.sub(r"[^a-zA-Z ]+", "", line).lower().lstrip()
-
+    sanitized_line = re.sub(r"[^a-zA-ZÀ-ÿ ]+", "", line).lower().lstrip()
     text = genius.lyrics(song_id=sid)
     text_list = text.split('\n')
+
     for row in text_list:
         nextsentence=False
-        sanitized_row = re.sub(r"[^a-zA-Z ]+", "", row).lower().lstrip()
+        sanitized_row = re.sub(r"[^a-zA-ZÀ-ÿ ]+", "", row).lower().lstrip()
 
         # DEBUG
-        LOGGER.info(sanitized_line)
-        LOGGER.info(sanitized_row)
+        #LOGGER.info(sanitized_line)
+        #LOGGER.info(sanitized_row)
 
         # If input is the full sentence
         if sanitized_line == sanitized_row:
@@ -81,7 +81,7 @@ def search_next_line_by_song(sid, line):
             # For all words that are not the last one of the sentence
             for word in current_sentence_list[:-1]:
 
-                sanitized_word = re.sub(r"[^a-zA-Z ]+", "", word).lower()
+                sanitized_word = re.sub(r"[^a-zA-ZÀ-ÿ ]+", "", word).lower()
                 if sanitized_word == last_line_word:
                     next_word_index = current_sentence_list.index(word) + 1
                     end_line = " ".join(current_sentence_list[next_word_index:])
