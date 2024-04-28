@@ -119,7 +119,7 @@ def genius_bot_answer(line):
     except:
         return False
 
-@plugin.rule(r'(.*\b)($nick)(.*)')
+@plugin.rule(r'$nick (.*)')
 
 def sentence_responder(bot, trigger):
 
@@ -143,7 +143,7 @@ def sentence_responder(bot, trigger):
                 LOGGER.info(trigger.nick + " is now blocked")
                 return
 
-    message = trigger.group(1) + trigger.group(3)
+    message = trigger.group(1)
     response = genius_bot_answer(message)
 
     if not trigger.sender.is_nick():
