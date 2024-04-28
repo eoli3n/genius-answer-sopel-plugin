@@ -119,7 +119,7 @@ def genius_bot_answer(line):
     except:
         return False
 
-@plugin.rule(r'(.*\b)($nickname)[ :,](.*)')
+@plugin.rule(r'(.*\b)($nickname)[:](.*)')
 
 def sentence_responder(bot, trigger):
 
