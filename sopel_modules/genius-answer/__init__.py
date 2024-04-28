@@ -119,7 +119,7 @@ def genius_bot_answer(line):
     except:
         return False
 
-@plugin.rule(r'$nick(.*)')
+@plugin.rule(r'$nick (.*)')
 
 def sentence_responder(bot, trigger):
 
